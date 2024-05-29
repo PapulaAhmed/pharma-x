@@ -1,0 +1,139 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background-image: url(../../public/mesh-login.png);
+    font-family: "Poppins", sans-serif;
+}
+
+.hero-text {
+    text-align: center;
+    width: 100%;
+    position: relative;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.card {
+    position: relative;
+    height: fit-content;
+}
+
+.card-container {
+    background-color: white;
+    width: 300px;
+    padding: 30px 20px;
+    border-radius: 18px;
+    position: relative;
+    height: fit-content;
+}
+
+.welcome-msg {
+    font-size: 12px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: #ccc;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: space-between;
+}
+
+.input-group {
+    position: relative;
+}
+
+.login-form input {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 100%;
+    padding-left: 35px;
+    transition: 1s;
+}
+
+.login-form button {
+    font-family: "Poppins", sans-serif;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.3s;
+}
+
+
+
+.login-form button:hover {
+    background-color: #0056b3;
+}
+
+.login-form button:hover {
+    background-color: #0056b3;
+    transition: background-color 0.3s ease;
+}
+
+.login-form input:focus {
+    outline: none;
+    box-shadow: 24px 25px 202px 24px rgba(130, 104, 201, 0.26);
+    -webkit-box-shadow: 24px 25px 202px 24px rgba(130, 104, 201, 0.26);
+    -moz-box-shadow: 24px 25px 202px 24px rgba(130, 104, 201, 0.26);
+}
+
+.input-icon {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    color: rgb(94, 109, 139);
+    width: 12px;
+}
+
+.signup {
+    font-size: 11px;
+    text-align: center;
+    margin-top: 10px;
+    color: black;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 8px 20px;
+}
+
+.forgot-password {
+    font-size: 11px;
+    display: block;
+    color: black;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    position: absolute;
+    bottom: 10px;
+
+}
+
+.error-msg {
+    position: relative;
+    text-align: center;
+    font-size: 12px;
+    color: red;
+    width: 100%;
+    margin-bottom: 10px;
+    text-wrap: wrap;
+}
+
+/* Path: pages/login/login.js */

@@ -3,7 +3,8 @@ import './Signup.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faIdCard } from '@fortawesome/free-solid-svg-icons';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import app from '../../src/firebaseConfig.js'; // Ensure this path matches where you export your initialized app
+import app from '../../firebaseConfig.js'; // Ensure this path matches where you export your initialized app
+import { Navigate } from 'react-router-dom';
 
 export const Signup = () => {
     useEffect(() => {
@@ -12,7 +13,7 @@ export const Signup = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [fullName, setFullName] = useState('');
+    // const [fullName, setFullName] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const auth = getAuth(app); // Use the initialized app instance
@@ -30,13 +31,17 @@ export const Signup = () => {
                 const user = userCredential.user;
                 console.log(user);
                 const userSignedUp = true;
+                localStorage.setItem('token', user.accessToken);
+                localStorage.setItem('user', JSON.stringify(user));
                 setSuccess("Account created successfully");
                 // Additional steps on successful signup (e.g., redirect or update UI)
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
+                console.log(errorCode, errorMessage);
                 setError(errorMessage); // Display Firebase errors to the user
+                Navigate('/admin');
             });
     };
 
@@ -51,7 +56,7 @@ export const Signup = () => {
                         <p className="success-msg">{success}</p>
                     </div>
                     <form className="login-form" onSubmit={handleSignup}>
-                        <div className="input-group">
+                        {/* <div className="input-group">
                             <FontAwesomeIcon icon={faIdCard} className="input-icon" />
                             <input
                                 type="text"
@@ -61,7 +66,7 @@ export const Signup = () => {
                                 onChange={(e) => setFullName(e.target.value)}
                                 placeholder="Full Name"
                             />
-                        </div>
+                        </div> */}
                         <div className="input-group">
                             <FontAwesomeIcon icon={faUser} className="input-icon" />
                             <input

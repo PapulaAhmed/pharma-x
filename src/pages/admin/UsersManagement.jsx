@@ -1,10 +1,7 @@
 import React from 'react'
-import './AdminPanel.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBoxOpen, faShoppingCart, faTachometerAlt, faUsers } from '@fortawesome/free-solid-svg-icons'
 import Sidebar from '../../components/sidebar/Sidebar.jsx'
 
-const AdminPanel = () => {
+const UsersManagement = () => {
     return (
         <div>
             {/* < !--Flex Container --> */}
@@ -12,11 +9,13 @@ const AdminPanel = () => {
                 <div className="flex-container">
                     {/* Sidebar */}
                     <Sidebar />
-                    
+
                     {/* Content */}
                     <div className="content">
-                        <h2>Dashboard</h2>
-                        <p>Welcome to the Admin Panel</p>
+                        <h2>User Management</h2>
+                        <p>Welcome to user management page where you will see a list of current users of the system</p>
+
+                        
                     </div>
                 </div>
             </div>
@@ -24,4 +23,4 @@ const AdminPanel = () => {
     )
 }
 
-export default AdminPanel
+export default UsersManagement

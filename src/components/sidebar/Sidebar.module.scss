@@ -1,0 +1,53 @@
+.sidebar {
+    width: 13%;
+    height: 100vh;
+    background-color: #f0f0f0;
+    padding: 3% 0%;
+    margin-right: 20px;
+    background-image: url(/public/mesh-login.png);
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .sidebarContent {
+        display: flex;
+        flex-direction: column;
+
+        .menuList {
+            list-style-type: none;
+
+            .menuItem {
+                border-radius: 5px;
+                margin: 30px 0;
+                cursor: pointer;
+                transition: background-color 0.3s;
+
+                a {
+                    padding: 10px 40px;
+                }
+
+                &:hover {
+                    background-color: #e0e0e0; // Hover background color applied to menuItem
+                }
+
+                &.active {
+                    background-color: black; // Active background color applied to menuItem
+                }
+
+                .link {
+                    text-decoration: none;
+                    color: black; // Default color
+                    display: block; // Make link fill the entire area of menuItem
+
+                    &.active {
+                        color: white; // Change text color to white when active
+                        font-weight: bold;
+                        background-color: black; 
+                    }
+                }
+            }
+        }
+    }
+}

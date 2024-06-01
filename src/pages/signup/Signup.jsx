@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Signup.css';
+import styles from './Signup.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faIdCard } from '@fortawesome/free-solid-svg-icons';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
@@ -46,18 +46,18 @@ export const Signup = () => {
     };
 
     return (
-        <div className="container">
-            <div className="card">
-                <div className="card-container">
-                    <div className="hero-text">
-                        <h1 className="brand-hero">Pharma X</h1>
-                        <p className="welcome-msg">Please fill in the form</p>
-                        <p className="error-msg">{error}</p>
-                        <p className="success-msg">{success}</p>
+        <div className={styles.container}>
+            <div className={styles.card}>
+                <div className={styles['card-container']}>
+                    <div className={styles['hero-text']}>
+                        <h1 className={styles['brand-hero']}>Pharma X</h1>
+                        <p className={styles['welcome-msg']}>Please fill in the form</p>
+                        <p className={styles['error-msg']}>{error}</p>
+                        <p className={styles['success-msg']}>{success}</p>
                     </div>
-                    <form className="login-form" onSubmit={handleSignup}>
-                        {/* <div className="input-group">
-                            <FontAwesomeIcon icon={faIdCard} className="input-icon" />
+                    <form className={styles['login-form']} onSubmit={handleSignup}>
+                        {/* <div className={styles['input-group']}>
+                            <FontAwesomeIcon icon={faIdCard} className={styles['input-icon']} />
                             <input
                                 type="text"
                                 id="fullname"
@@ -67,8 +67,8 @@ export const Signup = () => {
                                 placeholder="Full Name"
                             />
                         </div> */}
-                        <div className="input-group">
-                            <FontAwesomeIcon icon={faUser} className="input-icon" />
+                        <div className={styles['input-group']}>
+                            <FontAwesomeIcon icon={faUser} className={styles['input-icon']} />
                             <input
                                 type="text"
                                 id="email"
@@ -78,8 +78,8 @@ export const Signup = () => {
                                 placeholder="Email"
                             />
                         </div>
-                        <div className="input-group">
-                            <FontAwesomeIcon icon={faLock} className="input-icon" />
+                        <div className={styles['input-group']}>
+                            <FontAwesomeIcon icon={faLock} className={styles['input-icon']} />
                             <input
                                 type="password"
                                 id="password"

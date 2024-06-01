@@ -1,5 +1,5 @@
 import React from 'react'
-import './Login.css'
+import styles from './Login.module.css'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons'
@@ -49,29 +49,29 @@ const Login = () => {
 
     return (
         <div>
-            <div className="container">
-                <div className='card'>
-                    <div className='card-container'>
-                        <div className='hero-text'>
-                            <h1 className='brand-hero'>Pharma X</h1>
-                            <p className='welcome-msg'>Welcome Back! Please Login</p>
-                            <p className='error-msg'>{error}</p>
-                            <p className='success-msg'>{success}</p>
+            <div className={styles.container}>
+                <div className={styles.card}>
+                    <div className={styles['card-container']}>
+                        <div className={styles['hero-text']}>
+                            <h1 className={styles['brand-hero']}>Pharma X</h1>
+                            <p className={styles['welcome-msg']}>Welcome Back! Please Login</p>
+                            <p className={styles['error-msg']}>{error}</p>
+                            <p className={styles['success-msg']}>{success}</p>
                         </div>
-                        <form className='login-form' onSubmit={handleLogin}>
-                            <div className="input-group">
-                                <FontAwesomeIcon icon={faUser} className="input-icon" />
+                        <form className={styles['login-form']} onSubmit={handleLogin}>
+                            <div className={styles['input-group']}>
+                                <FontAwesomeIcon icon={faUser} className={styles['input-icon']} />
                                 <input type='text' id='username' value={email} name='username' onChange={(e) => setEmail(e.target.value)} placeholder="Username or Email" />
                             </div>
-                            <div className="input-group">
-                                <FontAwesomeIcon icon={faLock} className="input-icon" />
+                            <div className={styles['input-group']}>
+                                <FontAwesomeIcon icon={faLock} className={styles['input-icon']} />
                                 <input type='password' id='password' value={password} onChange={(e) => setPassword(e.target.value)} name='password' placeholder="Password" />
                             </div>
                             <button type='submit'>Login</button>
-                            <a href='/signup' className='signup'>Sign Up</a>
+                            <a href='/signup' className={styles.signup}>Sign Up</a>
                         </form>
                     </div>
-                    <a href='#' className='forgot-password'>Forgot Password?</a>
+                    <a href='#' className={styles['forgot-password']}>Forgot Password?</a>
                 </div>
             </div>
         </div>

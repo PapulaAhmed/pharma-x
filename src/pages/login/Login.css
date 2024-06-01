@@ -27,6 +27,13 @@ body {
     position: relative;
 }
 
+.success-msg {
+    color: green;
+    font-size: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
 .card-container {
     background-color: white;
     width: 300px;

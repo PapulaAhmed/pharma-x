@@ -1,0 +1,27 @@
+.content {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 100px;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.btn_icons {
+    margin: 0 10px;
+    cursor: pointer;
+}

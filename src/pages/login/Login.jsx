@@ -48,7 +48,7 @@ const Login = () => {
     };
 
     return (
-        <div>
+        <div style={{ backgroundImage: 'url(mesh-login.png)' }}>
             <div className={styles.container}>
                 <div className={styles.card}>
                     <div className={styles['card-container']}>

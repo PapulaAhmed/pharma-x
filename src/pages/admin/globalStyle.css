@@ -1,0 +1,15 @@
+body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    /* background-image: url(); */
+}
+
+.flex-container {
+    display: flex;
+}
+
+.content {
+    padding: 3% 3%;
+    width: 100%;
+}

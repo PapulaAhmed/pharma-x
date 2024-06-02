@@ -1,27 +1,76 @@
 .content {
     width: 100%;
+    padding: 20px; /* Adds padding around the content for better spacing */
+    box-sizing: border-box; /* Ensures padding does not affect the overall width */
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 100px;
+    margin-top: 75px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    table-layout: fixed; /* Add this line to enforce fixed column widths */
 }
 
 th {
-    background-color: #f2f2f2;
-    color: #333;
+    background-color: #007BFF; /* A brighter blue for a modern look */
+    color: #ffffff;
     font-weight: bold;
-    padding: 10px;
+    padding: 12px 15px; /* More padding for better cell spacing */
     text-align: left;
+    border-bottom: 1px solid #dee2e6; /* Adds a solid line for defining header from body */
 }
 
 td {
-    padding: 10px;
-    border-bottom: 1px solid #f2f2f2;
+    padding: 12px 15px; /* Uniform padding for all cells */
+    border-bottom: 1px solid #f8f9fa; /* Lighter border color for less visual intensity */
+    color: #212529; /* Slightly darker text for better readability */
+}
+
+td.action {
+    display: flex; /* Align action buttons horizontally */
+    justify-content: center; /* Center action buttons */
+}
+
+th.action {
+    text-align: center; /* Center align the action column header */
+
 }
 
 .btn_icons {
-    margin: 0 10px;
+    color: #007BFF; /* Match icon color with the header for consistency */
+    margin: 0 8px; /* Adjust spacing around icons */
     cursor: pointer;
+    text-align: center;
+    transition: color 0.3s; /* Smooth transition for hover effects */
+}
+
+.btn_icons:hover {
+    color: #0056b3; /* Darken icon on hover for interactive feedback */
+}
+
+.spinner {
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust position accurately at the center */
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: #09f;
+  
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
 }

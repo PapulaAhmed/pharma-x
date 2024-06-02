@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styles from './Signup.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faIdCard } from '@fortawesome/free-solid-svg-icons';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import app from '../../firebaseConfig.js'; // Ensure this path matches where you export your initialized app
-import { Navigate } from 'react-router-dom';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import app from '../../firebaseConfig.js';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export const Signup = () => {
     useEffect(() => {
@@ -13,40 +13,42 @@ export const Signup = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    // const [fullName, setFullName] = useState('');
+    const [fullName, setFullName] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    const auth = getAuth(app); // Use the initialized app instance
+    const auth = getAuth(app);
 
-    const userSignedUp = null;
+    const navigate = useNavigate();
 
     const handleSignup = (e) => {
         e.preventDefault();
-        if (!email || !password) {
-            setError("Email and password cannot be empty");
+        if (!email || !password || !fullName) {
+            setError("Email, password, and full name cannot be empty");
             return;
         }
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                const user = userCredential.user;
-                console.log(user);
-                const userSignedUp = true;
-                localStorage.setItem('token', user.accessToken);
-                localStorage.setItem('user', JSON.stringify(user));
-                setSuccess("Account created successfully");
-                // Additional steps on successful signup (e.g., redirect or update UI)
+                // Update user profile with their full name
+                updateProfile(userCredential.user, {
+                    displayName: fullName
+                }).then(() => {
+                    console.log("Profile updated");
+                    localStorage.setItem('token', userCredential.user.accessToken);
+                    localStorage.setItem('user', JSON.stringify(userCredential.user));
+                    setSuccess("Account created successfully");
+                    navigate('/admin'); // Redirect after successful signup
+                }).catch((error) => {
+                    console.error("Profile update error:", error);
+                });
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
-                setError(errorMessage); // Display Firebase errors to the user
-                Navigate('/admin');
+                console.log(error.code, error.message);
+                setError(error.message); // Display Firebase errors to the user
             });
     };
 
     return (
-        <div className={styles.container} style={{ backgroundImage: 'url(mesh-login.png)' }} >
+        <div className={styles.container} style={{ backgroundImage: 'url(mesh-login.png)' }}>
             <div className={styles.card}>
                 <div className={styles['card-container']}>
                     <div className={styles['hero-text']}>
@@ -56,7 +58,7 @@ export const Signup = () => {
                         <p className={styles['success-msg']}>{success}</p>
                     </div>
                     <form className={styles['login-form']} onSubmit={handleSignup}>
-                        {/* <div className={styles['input-group']}>
+                        <div className={styles['input-group']}>
                             <FontAwesomeIcon icon={faIdCard} className={styles['input-icon']} />
                             <input
                                 type="text"
@@ -66,7 +68,7 @@ export const Signup = () => {
                                 onChange={(e) => setFullName(e.target.value)}
                                 placeholder="Full Name"
                             />
-                        </div> */}
+                        </div>
                         <div className={styles['input-group']}>
                             <FontAwesomeIcon icon={faUser} className={styles['input-icon']} />
                             <input
@@ -84,8 +86,8 @@ export const Signup = () => {
                                 type="password"
                                 id="password"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
                                 name="password"
+                                onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Password"
                             />
                         </div>

@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+#secret files
+.env
+server/*.json
+/server/pharmax-uniq-firebase-adminsdk-ai396-a89298cc66.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

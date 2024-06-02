@@ -46,7 +46,7 @@ export const Signup = () => {
     };
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} style={{ backgroundImage: 'url(mesh-login.png)' }} >
             <div className={styles.card}>
                 <div className={styles['card-container']}>
                     <div className={styles['hero-text']}>

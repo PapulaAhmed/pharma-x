@@ -6,6 +6,8 @@ import Signup from './pages/signup/Signup.jsx';
 import Dashboard from './pages/admin/dashboard/Dashboard.jsx';
 import UsersManagement from './pages/admin/users/UsersManagement.jsx';
 import AddUser from './pages/admin/users/adduser/AddUser.jsx';
+import RemoveItem from './pages/remove_item/RemoveItem.jsx';
+import AddItem from './pages/add_item/AddItem.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,6 +18,8 @@ root.render(
       <Route path="/admin" element={<Dashboard />} />
       <Route path="/admin/users" element={<UsersManagement />} />
       <Route path="/admin/users/adduser" element={<AddUser />} />
+      <Route path="/admin/removeitem" element={<RemoveItem />} />
+      <Route path="/admin/additem" element={<AddItem />} />
     </Routes>
   </BrowserRouter>
 );

@@ -1,25 +1,25 @@
+const express = require('express');
+const cors = require('cors');
+const admin = require('firebase-admin');
+const firebaseConfig = require('../config/serviceAccount'); // Assuming this exports the configuration
 
-import express from 'express';
-import admin from 'firebase-admin';
-import cors from 'cors';
-
+// Initialize express app
 const app = express();
-const port = 3001;
 
-import serviceAccount from './pharmax-uniq-firebase-adminsdk-ai396-a89298cc66.json' assert { type: 'json' };
-
-
+// Enable CORS with default settings
 app.use(cors());
 
-
+// Initialize Firebase Admin with service account
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(firebaseConfig)
 });
 
+// Root route that confirms the server is running
 app.get('/', (req, res) => {
     res.send('Server is running!');
 });
 
+// Route to list users
 app.get('/users', async (req, res) => {
     try {
         const listUsersResult = await admin.auth().listUsers();
@@ -32,10 +32,10 @@ app.get('/users', async (req, res) => {
     } catch (error) {
         console.error('Error listing users:', error);
         res.status(500).send('Error listing users');
-
     }
 });
 
+// Route to delete a user
 app.delete('/users/:uid', async (req, res) => {
     const uid = req.params.uid;
     try {
@@ -47,8 +47,5 @@ app.delete('/users/:uid', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
-});
-
-
+// Export the Express API
+module.exports = app;

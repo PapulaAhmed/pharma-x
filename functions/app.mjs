@@ -1,7 +1,11 @@
-const express = require('express');
-const cors = require('cors');
-const admin = require('firebase-admin');
-const firebaseConfig = require('../config/serviceAccount'); // Assuming this exports the configuration
+import express from "express";
+import cors from "cors";
+import admin from "firebase-admin";
+
+// eslint-disable-next-line
+import serviceAccount from "./pharmax-uniq-firebase-adminsdk.json" assert { type: "json" };
+
+// const firebaseConfig = require('../config/serviceAccount'); // Assuming this exports the configuration
 
 // Initialize express app
 const app = express();
@@ -11,7 +15,7 @@ app.use(cors());
 
 // Initialize Firebase Admin with service account
 admin.initializeApp({
-    credential: admin.credential.cert(firebaseConfig)
+    credential: admin.credential.cert(serviceAccount),
 });
 
 // Root route that confirms the server is running
@@ -19,7 +23,6 @@ app.get('/', (req, res) => {
     res.send('Server is running!');
 });
 
-// Route to list users
 app.get('/users', async (req, res) => {
     try {
         const listUsersResult = await admin.auth().listUsers();
@@ -31,21 +34,21 @@ app.get('/users', async (req, res) => {
         res.json(users);
     } catch (error) {
         console.error('Error listing users:', error);
-        res.status(500).send('Error listing users');
+        res.status(500).send({ message: 'Failed to retrieve users', error: error.message });
     }
 });
 
-// Route to delete a user
 app.delete('/users/:uid', async (req, res) => {
     const uid = req.params.uid;
     try {
         await admin.auth().deleteUser(uid);
-        res.send('User deleted successfully');
+        res.send({ message: 'User deleted successfully' });
     } catch (error) {
         console.error('Error deleting user:', error);
-        res.status(500).send('Error deleting user');
+        res.status(500).send({ message: 'Failed to delete user', error: error.message });
     }
 });
 
+
 // Export the Express API
-module.exports = app;
+export default app;

@@ -10,6 +10,7 @@ import RemoveItem from './pages/remove_item/RemoveItem.jsx';
 import AddItem from './pages/add_item/AddItem.jsx';
 import Product from './pages/admin/product/ProductManagement.jsx';
 import AddProduct from './pages/admin/product/addproduct/AddProduct.jsx';
+import NewInvoice from './pages/invoice/new_invoice/NewInvoice.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -24,6 +25,7 @@ root.render(
       <Route path="/admin/additem" element={<AddItem />} />
       <Route path="/admin/products" element={<Product />} />
       <Route path="/admin/products/addproduct" element={<AddProduct />} />
+      <Route path="/invoice/newinvoice" element={<NewInvoice />} />
     </Routes>
   </BrowserRouter>
 );

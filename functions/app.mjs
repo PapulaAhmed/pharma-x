@@ -1,10 +1,10 @@
 import express from "express";
 import cors from "cors";
 import admin from "firebase-admin";
+import functions from "firebase-functions";
 
 // eslint-disable-next-line
-import serviceAccount from "./pharmax-uniq-firebase-adminsdk.json" assert { type: "json" };
-
+// import serviceAccount from "./pharmax-uniq-firebase-adminsdk.json" assert { type: "json" };
 // const firebaseConfig = require('../config/serviceAccount'); // Assuming this exports the configuration
 
 
@@ -13,6 +13,9 @@ const app = express();
 
 // Enable CORS with default settings
 app.use(cors());
+
+const serviceAccount = JSON.parse(Buffer.from(functions.config().adminsdk.config, 'base64').toString('ascii'));
+
 
 // Initialize Firebase Admin with service account
 admin.initializeApp({

@@ -10,8 +10,7 @@
         "firebase-debug.*.log",
         "*.local"
       ],
-      "predeploy": [
-      ]
+      "predeploy": []
     }
   ],
   "hosting": {
@@ -25,6 +24,13 @@
       {
         "source": "**",
         "destination": "/index.html"
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "/app",
+        "type": 301
       }
     ]
   }

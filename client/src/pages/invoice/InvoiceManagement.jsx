@@ -8,6 +8,7 @@ import { db } from '../../firebaseConfig.js';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 
 const InvoicesManagement = () => {
+    document.title = 'Invoice Management | Pharma X';
     const [invoices, setInvoices] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -60,7 +61,7 @@ const InvoicesManagement = () => {
                         <h2>Invoice Management</h2>
                         <p>Welcome to the invoice management page where you can see a list of current invoices.</p>
                         <div className={styles["content-container"]}>
-                            <Link to="/admin/invoices/addinvoice">Add Invoice</Link>
+                            <Link to="/app/invoices/newinvoice">Add Invoice</Link>
                             {isLoading ? (
                                 <div className={styles.spinner}></div>
                             ) : (

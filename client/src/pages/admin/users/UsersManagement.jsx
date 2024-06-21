@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Sidebar from '../../../components/sidebar/Sidebar.jsx';
-import Modal from '../../../components/modal/ConfirmationModal.jsx'; // Import the modal component
+import Modal from '../../../components/modal/ConfirmationModal.jsx'; // Ensure this modal component is properly set up
 import styles from './UsersManagement.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faPenToSquare, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 const UsersManagement = () => {
@@ -12,18 +12,27 @@ const UsersManagement = () => {
     const [uidVisibility, setUidVisibility] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
+    const [modalMessage, setModalMessage] = useState('');
+    const [isError, setIsError] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const fetchUsers = useCallback(() => {
         setIsLoading(true);
-        fetch(`${import.meta.env.VITE_API_URL}/users`)
-            .then(response => response.json())
+        const apiUrl = 'https://us-central1-pharmax-uniq.cloudfunctions.net/api/users';
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch users');
+                }
+                return response.json();
+            })
             .then(data => {
                 setUsers(data.map(user => ({
                     ...user,
-                    role: toSentenceCase(user.role)
+                    role: toSentenceCase(user.role || 'user') // Assuming the role is provided, defaulting to 'user'
                 })));
                 const visibility = data.reduce((acc, user) => {
-                    acc[user.uid] = false;
+                    acc[user.uid] = false; // Initialize visibility as false
                     return acc;
                 }, {});
                 setUidVisibility(visibility);
@@ -33,13 +42,11 @@ const UsersManagement = () => {
                 console.error('Error fetching users:', error);
                 setIsLoading(false);
             });
-    }, []); // Add dependencies here if there are any variables or props used inside fetchUsers
-    
+    }, []);
+
     useEffect(() => {
         fetchUsers();
     }, [fetchUsers]);
-    
-
 
     const toSentenceCase = (text) => {
         if (!text) return '';
@@ -49,28 +56,44 @@ const UsersManagement = () => {
     const handleDelete = (userId) => {
         setIsModalOpen(true);
         setSelectedUserId(userId);
+        setModalMessage('Are you sure you want to delete this user?'); // Default message
     };
 
     const confirmDelete = () => {
         if (!selectedUserId) return;
-        fetch(`${import.meta.env.VITE_API_URL}/users/${selectedUserId}`, {
+        setIsDeleting(true); // Start loading
+        fetch(`https://us-central1-pharmax-uniq.cloudfunctions.net/api/users/${selectedUserId}`, {
             method: 'DELETE',
         })
-        .then(response => {
-            if (!response.ok) throw new Error('Failed to delete user');
-            setUsers(currentUsers => currentUsers.filter(user => user.uid !== selectedUserId));
-            alert('User deleted successfully');
-        })
-        .catch(error => {
-            console.error('Error deleting user:', error);
-            alert(`Error deleting user: ${error.message}`);
-        });
-        closeModal();
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.message || 'Failed to delete user');
+                    });
+                }
+                setUsers(currentUsers => currentUsers.filter(user => user.uid !== selectedUserId));
+                setModalMessage('User deleted successfully');
+                setIsError(false);
+            })
+            .catch(error => {
+                console.error('Error deleting user:', error);
+                setModalMessage(error.message || 'Error deleting user');
+                setIsError(true);
+            })
+            .finally(() => {
+                setIsModalOpen(false); // Close the modal after operation
+                setSelectedUserId(null);
+                setIsDeleting(false); // End loading
+            });
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
-        setSelectedUserId(null);
+        if (!isDeleting) { // Only allow closing if not currently deleting
+            setIsModalOpen(false);
+            setSelectedUserId(null);
+            setModalMessage('');
+            setIsError(false);
+        }
     };
 
     const toggleUidVisibility = (userId) => {
@@ -84,15 +107,17 @@ const UsersManagement = () => {
         console.log('Edit function not implemented yet for user:', userId);
         // You can add your navigation or state management logic here
     };
-    
-
-
-    
 
     return (
         <div>
-            <Modal isOpen={isModalOpen} onClose={closeModal} onConfirm={confirmDelete}>
-                Are you sure you want to delete this user?
+            <Modal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                onConfirm={confirmDelete}
+                isError={isError}
+                isLoading={isDeleting}
+            >
+                {isDeleting ? 'Deleting...' : modalMessage}
             </Modal>
             <div className="container">
                 <div className="flex-container">
@@ -126,7 +151,7 @@ const UsersManagement = () => {
                                                 <td>{user.role}</td>
                                                 <td className={styles.action}>
                                                     <a onClick={() => handleEdit(user.uid)} className={styles.btn_icon}>
-                                                        <FontAwesomeIcon className={styles.btn_icons} icon={faPenToSquare} title="Edit" />
+                                                        <FontAwesomeIcon className={styles.btn_icons} icon={faEdit} title="Edit" />
                                                     </a>
                                                     <a onClick={() => handleDelete(user.uid)} className={styles.btn_icon}>
                                                         <FontAwesomeIcon className={styles.btn_icons} icon={faTrash} title="Delete" />

@@ -4,12 +4,13 @@ import Signup from './pages/signup/Signup.jsx';
 import Dashboard from './pages/admin/dashboard/Dashboard.jsx';
 import UsersManagement from './pages/admin/users/UsersManagement.jsx';
 import AddUser from './pages/admin/users/adduser/AddUser.jsx';
-import Product from './pages/admin/product/ProductManagement.jsx';
-import AddProduct from './pages/admin/product/addproduct/AddProduct.jsx';
 import NewInvoice from './pages/invoice/new_invoice/NewInvoice.jsx';
 import InvoicesManagement from './pages/invoice/InvoiceManagement.jsx';
 import PrivateRoute from './components/auth/PrivateRoute.jsx';
 import Index from './pages/index/Index.jsx';
+import Product from './pages/product/ProductManagement.jsx';
+import AddProduct from './pages/product/addproduct/AddProduct.jsx';
+
 
 
 const App = () => (

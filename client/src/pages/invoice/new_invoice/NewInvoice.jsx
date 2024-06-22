@@ -3,12 +3,14 @@ import { db } from '../../../firebaseConfig';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { Grid, TextField, IconButton, Button, Typography, Box, Autocomplete } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from 'react-router-dom';
 
 const InvoiceForm = () => {
   const [customer, setCustomer] = useState({ name: '', address: '', phone: '', gender: '' });
   const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [total, setTotal] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch all products
@@ -86,10 +88,11 @@ const InvoiceForm = () => {
     setCustomer({ name: '', address: '', phone: '', gender: '' });
     setProducts([]);
     setTotal(0);
+    navigate('/app/invoices');
   };
 
   return (
-    <Box sx={{ maxWidth: 1000, m: 'auto', p: 4 }}>
+    <Box sx={{ maxWidth: 1000, m: 'auto', p: 4 }} >
       <Typography variant="h4" gutterBottom>Invoice Form</Typography>
       {Object.entries(customer).map(([key, value]) => (
         <TextField
@@ -103,7 +106,7 @@ const InvoiceForm = () => {
         />
       ))}
       {products.map((product, index) => (
-        <Grid container spacing={2} alignItems="center" key={index}>
+        <Grid container spacing={2} alignItems="center" key={index} flexWrap={'nowrap'} marginTop={'5px'}>
           <Grid item xs={6}>
             <Autocomplete
               value={product.itemName}

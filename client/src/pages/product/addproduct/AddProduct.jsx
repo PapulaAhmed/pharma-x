@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { db } from '../../../../firebaseConfig'; // Adjust the path to your firebaseConfig file
+import { db } from '../../../firebaseConfig'; // Adjust the path to your firebaseConfig file
 import { collection, addDoc } from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
-import Sidebar from '../../../../components/sidebar/Sidebar.jsx';
+import Sidebar from '../../../components/sidebar/Sidebar.jsx';
 import styles from './AddProduct.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBarcode, faBox, faBuilding, faDollarSign, faIndustry, faPlus, faTag } from '@fortawesome/free-solid-svg-icons';
@@ -134,7 +134,7 @@ const AddProduct = () => {
             <button type="submit" className={styles.submitButton} disabled={isLoading}>
               {isLoading ? 'Adding...' : 'Add Product'}
             </button>
-            <Link to="/admin/products" className={styles.backButton}>Back to Products</Link>
+            <Link to="/app/products" className={styles.backButton}>Back to Products</Link>
           </form>
         </div>
       </div>

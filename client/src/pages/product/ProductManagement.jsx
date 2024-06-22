@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Sidebar from '../../../components/sidebar/Sidebar.jsx';
+import Sidebar from '../../components/sidebar/Sidebar.jsx';
 import styles from './ProductManagement.module.scss';
 import { Link } from 'react-router-dom';
-import { db } from '../../../firebaseConfig'; // Adjust the path to your firebaseConfig file
+import { db } from '../../firebaseConfig'; // Adjust the path to your firebaseConfig file
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { collection, getDocs, orderBy, query, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import Modal from '../../../components/modal/Modal';
+import EditItemModal from '../../components/modal/EditItemModal.jsx';
+import { TextField, Button, CircularProgress, Box, MenuItem, Grid } from '@mui/material';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -102,22 +103,37 @@ const Product = () => {
         <div className="content">
           <h2>Item Management</h2>
           <p>Welcome to item management section where you can manage and define items in the system</p>
+          <Box mb={2} display="flex" alignItems="center" gap={2} marginTop={'10px'}>
+            <TextField
+              variant="outlined"
+              label="Search..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              fullWidth
+            />
+            <TextField
+              select
+              label="Search Criteria"
+              value={searchCriteria}
+              onChange={handleCriteriaChange}
+              variant="outlined"
+              fullWidth
+            >
+              <MenuItem value="ItemName">Item Name</MenuItem>
+              <MenuItem value="Barcode">Barcode</MenuItem>
+            </TextField>
+          </Box>
           <div className={styles["content-container"]}>
-            <Link to="/admin/products/addproduct">Add Product</Link>
-            <div className={styles["search-container"]}>
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
-              <select value={searchCriteria} onChange={handleCriteriaChange}>
-                <option value="ItemName">Item Name</option>
-                <option value="Barcode">Barcode</option>
-              </select>
-            </div>
+            <Link to="/app/products/addproduct">Add Product</Link>
             {isLoading ? (
-              <div className={styles.spinner}></div>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="50vh" // Adjust this to center the spinner based on the viewport height
+              >
+                <CircularProgress />
+              </Box>
             ) : (
               filteredProducts.length > 0 ? (
                 <table>
@@ -146,12 +162,12 @@ const Product = () => {
                         <td>{product.UnitPrice}</td>
                         <td>{product.Barcode}</td>
                         <td className={styles.action}>
-                          <a onClick={() => handleEdit(product)} className={styles.btn_icon}>
+                          <Button onClick={() => handleEdit(product)}>
                             <FontAwesomeIcon className={styles.btn_icons} icon={faPenToSquare} title="Edit" />
-                          </a>
-                          <a onClick={() => handleDelete(product.id)} className={styles.btn_icon}>
+                          </Button>
+                          <Button onClick={() => handleDelete(product.id)}>
                             <FontAwesomeIcon className={styles.btn_icons} icon={faTrash} title="Delete" />
-                          </a>
+                          </Button>
                         </td>
                       </tr>
                     ))}
@@ -165,97 +181,92 @@ const Product = () => {
         </div>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <EditItemModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         {selectedProduct && (
           <form onSubmit={handleUpdateProduct} className={styles.form}>
-            <div className={styles.formGroup}>
-              <label>Item ID</label>
-              <input
-                type="text"
-                name="ItemID"
-                value={selectedProduct.ItemID}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Item Name</label>
-              <input
-                type="text"
-                name="ItemName"
-                value={selectedProduct.ItemName}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Manufacturer</label>
-              <input
-                type="text"
-                name="Manufacturer"
-                value={selectedProduct.Manufacturer}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Supplier</label>
-              <input
-                type="text"
-                name="Supplier"
-                value={selectedProduct.Supplier}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Quantity In Stock</label>
-              <input
-                type="number"
-                name="QuantityInStock"
-                value={selectedProduct.QuantityInStock}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Cost</label>
-              <input
-                type="number"
-                step="0.01"
-                name="Cost"
-                value={selectedProduct.Cost}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Price</label>
-              <input
-                type="number"
-                step="0.01"
-                name="UnitPrice"
-                value={selectedProduct.UnitPrice}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Barcode</label>
-              <input
-                type="text"
-                name="Barcode"
-                value={selectedProduct.Barcode}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <button type="submit" className={styles.submitButton} disabled={isLoading}>
+            <TextField
+              label="Item ID"
+              name="ItemID"
+              value={selectedProduct.ItemID}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="Item Name"
+              name="ItemName"
+              value={selectedProduct.ItemName}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="Manufacturer"
+              name="Manufacturer"
+              value={selectedProduct.Manufacturer}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="Supplier"
+              name="Supplier"
+              value={selectedProduct.Supplier}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="Quantity In Stock"
+              name="QuantityInStock"
+              type="number"
+              value={selectedProduct.QuantityInStock}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="Cost"
+              name="Cost"
+              type="number"
+              step="0.01"
+              value={selectedProduct.Cost}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="Price"
+              name="UnitPrice"
+              type="number"
+              step="0.01"
+              value={selectedProduct.UnitPrice}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="Barcode"
+              name="Barcode"
+              value={selectedProduct.Barcode}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <Button type="submit" color="primary" variant="contained" disabled={isLoading}>
               {isLoading ? 'Updating...' : 'Update Product'}
-            </button>
+            </Button>
           </form>
         )}
-      </Modal>
+      </EditItemModal>
     </div>
   );
 };

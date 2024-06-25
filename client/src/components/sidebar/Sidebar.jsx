@@ -52,11 +52,18 @@ const Sidebar = () => {
                         </li>
                     )}
                     {role === 'pharmacist' && (
-                        <li className={styles.menuItem}>
-                            <NavLink to="/app/invoices" className={checkIsActive('/app/invoices') ? `${styles.link} ${styles.active}` : styles.link}>
-                                <FontAwesomeIcon className='icons' icon={faShoppingCart} /> Invoices
-                            </NavLink>
-                        </li>
+                        <>
+                            <li className={styles.menuItem}>
+                                <NavLink to="/app/invoices" className={checkIsActive('/app/invoices') ? `${styles.link} ${styles.active}` : styles.link}>
+                                    <FontAwesomeIcon className='icons' icon={faShoppingCart} /> Invoices
+                                </NavLink>
+                            </li>
+                            <li className={styles.menuItem}>
+                                <NavLink to="/app/customers" className={checkIsActive('/app/customers') ? `${styles.link} ${styles.active}` : styles.link}>
+                                    <FontAwesomeIcon className='icons' icon={faShoppingCart} /> Customers
+                                </NavLink>
+                            </li>
+                        </>
                     )}
                 </ul>
                 <div onClick={handleLogout} className={styles.logout}>

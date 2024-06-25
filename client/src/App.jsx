@@ -33,6 +33,7 @@ const App = () => (
       <Route path="/app/customers/addcustomer" element={<PrivateRoute allowedRoles={['pharmacist', 'admin']}><AddCustomer /></PrivateRoute>} />
     </Routes>
   </BrowserRouter>
+  
 );
 
 export default App;

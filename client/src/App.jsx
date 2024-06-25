@@ -10,6 +10,8 @@ import PrivateRoute from './components/auth/PrivateRoute.jsx';
 import Index from './pages/index/Index.jsx';
 import Product from './pages/product/ProductManagement.jsx';
 import AddProduct from './pages/product/addproduct/AddProduct.jsx';
+import CustomerManagement from './pages/customers/CustomerManagement.jsx';
+import AddCustomer from './pages/customers/add_customer/AddCustomer.jsx';
 
 
 
@@ -27,6 +29,8 @@ const App = () => (
       <Route path="/app/products/addproduct" element={<PrivateRoute allowedRoles={['pharmacist technician', 'admin']}><AddProduct /></PrivateRoute>} />
       <Route path="/app/invoices/*" element={<PrivateRoute allowedRoles={['pharmacist', 'admin']}><InvoicesManagement /></PrivateRoute>} />
       <Route path="/app/invoices/newinvoice" element={<PrivateRoute allowedRoles={['pharmacist', 'admin']}><NewInvoice /></PrivateRoute>} />
+      <Route path="/app/customers" element={<PrivateRoute allowedRoles={['pharmacist', 'admin']}><CustomerManagement /></PrivateRoute>} />
+      <Route path="/app/customers/addcustomer" element={<PrivateRoute allowedRoles={['pharmacist', 'admin']}><AddCustomer /></PrivateRoute>} />
     </Routes>
   </BrowserRouter>
 );

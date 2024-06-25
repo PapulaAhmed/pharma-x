@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../../firebaseConfig';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
-import { Grid, TextField, IconButton, Button, Typography, Box, Autocomplete } from '@mui/material';
+import { Grid, TextField, IconButton, Button, Typography, Box, Autocomplete, Dialog, DialogTitle, DialogContent, List, ListItem, ListItemText } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,11 @@ const InvoiceForm = () => {
   const [customer, setCustomer] = useState({ name: '', address: '', phone: '', gender: '' });
   const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
+  const [allCustomers, setAllCustomers] = useState([]);
+  const [filteredCustomers, setFilteredCustomers] = useState([]);
   const [total, setTotal] = useState(0);
+  const [isCustomerDialogOpen, setIsCustomerDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +26,17 @@ const InvoiceForm = () => {
         unitPrice: product.UnitPrice
       })));
     };
+
+    // Fetch all customers
+    const fetchCustomers = async () => {
+      const querySnapshot = await getDocs(collection(db, 'customers'));
+      const customersData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+      setAllCustomers(customersData);
+      setFilteredCustomers(customersData);
+    };
+
     fetchProducts();
+    fetchCustomers();
   }, []);
 
   const handleCustomerChange = (e) => {
@@ -91,20 +105,78 @@ const InvoiceForm = () => {
     navigate('/app/invoices');
   };
 
+  const handleOpenCustomerDialog = () => {
+    setIsCustomerDialogOpen(true);
+  };
+
+  const handleCloseCustomerDialog = () => {
+    setIsCustomerDialogOpen(false);
+  };
+
+  const handleSelectCustomer = (selectedCustomer) => {
+    setCustomer({
+      name: selectedCustomer.name,
+      address: selectedCustomer.address,
+      phone: selectedCustomer.phoneNumber,
+      gender: selectedCustomer.sex
+    });
+    handleCloseCustomerDialog();
+  };
+
+  const handleSearchChange = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+    setFilteredCustomers(
+      allCustomers.filter(customer =>
+        customer.name.toLowerCase().includes(term) ||
+        customer.phoneNumber.toLowerCase().includes(term) ||
+        customer.id.toLowerCase().includes(term)
+      )
+    );
+  };
+
   return (
     <Box sx={{ maxWidth: 1000, m: 'auto', p: 4 }} >
       <Typography variant="h4" gutterBottom>Invoice Form</Typography>
-      {Object.entries(customer).map(([key, value]) => (
-        <TextField
-          key={key}
-          name={key}
-          label={key.charAt(0).toUpperCase() + key.slice(1)}
-          value={value}
-          onChange={handleCustomerChange}
-          fullWidth
-          margin="normal"
-        />
-      ))}
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs={9}>
+          <TextField
+            name="name"
+            label="Name"
+            value={customer.name}
+            onChange={handleCustomerChange}
+            fullWidth
+            margin="normal"
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <Button variant="outlined" onClick={handleOpenCustomerDialog} sx={{ mt: 2 }}>Choose Existing Customer</Button>
+        </Grid>
+      </Grid>
+      <TextField
+        name="address"
+        label="Address"
+        value={customer.address}
+        onChange={handleCustomerChange}
+        fullWidth
+        margin="normal"
+      />
+      <TextField
+        name="phone"
+        label="Phone"
+        value={customer.phone}
+        onChange={handleCustomerChange}
+        fullWidth
+        margin="normal"
+      />
+      <TextField
+        name="gender"
+        label="Gender"
+        value={customer.gender}
+        onChange={handleCustomerChange}
+        fullWidth
+        margin="normal"
+      />
       {products.map((product, index) => (
         <Grid container spacing={2} alignItems="center" key={index} flexWrap={'nowrap'} marginTop={'5px'}>
           <Grid item xs={6}>
@@ -169,6 +241,26 @@ const InvoiceForm = () => {
           Total: ${total.toFixed(2)}
         </Typography>
       </Box>
+
+      <Dialog open={isCustomerDialogOpen} onClose={handleCloseCustomerDialog}>
+        <DialogTitle>Select a Customer</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            fullWidth
+            margin="normal"
+          />
+          <List>
+            {filteredCustomers.map((customer) => (
+              <ListItem button key={customer.id} onClick={() => handleSelectCustomer(customer)}>
+                <ListItemText primary={customer.name} secondary={customer.phoneNumber} />
+              </ListItem>
+            ))}
+          </List>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };

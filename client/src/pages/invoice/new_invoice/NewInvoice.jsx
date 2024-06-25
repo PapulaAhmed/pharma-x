@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../../firebaseConfig';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
-import { Grid, TextField, IconButton, Button, Typography, Box, Autocomplete, Dialog, DialogTitle, DialogContent, List, ListItem, ListItemText } from '@mui/material';
+import { Grid, TextField, IconButton, Button, Typography, Box, Autocomplete, Dialog, DialogTitle, DialogContent, List, ListItem, ListItemText, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
 
@@ -118,7 +118,7 @@ const InvoiceForm = () => {
       name: selectedCustomer.name,
       address: selectedCustomer.address,
       phone: selectedCustomer.phoneNumber,
-      gender: selectedCustomer.sex
+      gender: selectedCustomer.gender
     });
     handleCloseCustomerDialog();
   };
@@ -169,14 +169,19 @@ const InvoiceForm = () => {
         fullWidth
         margin="normal"
       />
-      <TextField
-        name="gender"
-        label="Gender"
-        value={customer.gender}
-        onChange={handleCustomerChange}
-        fullWidth
-        margin="normal"
-      />
+      <FormControl fullWidth margin="normal">
+        <InputLabel>Gender</InputLabel>
+        <Select
+          name="gender"
+          value={customer.gender}
+          onChange={handleCustomerChange}
+          label="Gender"
+        >
+          <MenuItem value="Male">Male</MenuItem>
+          <MenuItem value="Female">Female</MenuItem>
+          <MenuItem value="Not Specified">Not Specified</MenuItem>
+        </Select>
+      </FormControl>
       {products.map((product, index) => (
         <Grid container spacing={2} alignItems="center" key={index} flexWrap={'nowrap'} marginTop={'5px'}>
           <Grid item xs={6}>

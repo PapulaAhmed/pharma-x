@@ -6,6 +6,7 @@ import Sidebar from '../../../components/sidebar/Sidebar.jsx'
 import  '../globalStyle.css'
 
 const Dashboard = () => {
+    document.title = 'Admin Dashboard - Pharmax'
     return (
         <div>
             {/* < !--Flex Container --> */}

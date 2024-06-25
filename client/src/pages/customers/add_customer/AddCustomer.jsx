@@ -5,7 +5,7 @@ import { Box, TextField, Button, Typography, MenuItem, Breadcrumbs, Link } from 
 import { useNavigate } from 'react-router-dom';
 
 const AddCustomer = () => {
-    const [customer, setCustomer] = useState({ name: '', age: '', phoneNumber: '', address: '', sex: '' });
+    const [customer, setCustomer] = useState({ name: '', age: '', phoneNumber: '', address: '', gender: '' });
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ const AddCustomer = () => {
                 age: parseInt(customer.age, 10)
             });
             alert('Customer added successfully');
-            setCustomer({ name: '', age: '', phoneNumber: '', address: '', sex: '' });
+            setCustomer({ name: '', age: '', phoneNumber: '', address: '', gender: '' });
         } catch (error) {
             console.error('Error adding customer: ', error);
             alert('Error adding customer');
@@ -83,16 +83,17 @@ const AddCustomer = () => {
                 />
                 <TextField
                     select
-                    label="Sex"
-                    name="sex"
-                    value={customer.sex}
+                    label="Gender"
+                    name="gender"
+                    value={customer.gender}
                     onChange={handleInputChange}
                     fullWidth
                     margin="normal"
                     required
                 >
-                    <MenuItem value="male">Male</MenuItem>
-                    <MenuItem value="female">Female</MenuItem>
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Not Specified">Not Specified</MenuItem>
                 </TextField>
                 <Button type="submit" variant="contained" color="primary" disabled={isLoading}>
                     {isLoading ? 'Adding...' : 'Add Customer'}

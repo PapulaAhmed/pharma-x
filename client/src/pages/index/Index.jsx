@@ -6,6 +6,7 @@ const Index = () => {
     const [user, setUser] = useState(null); // State to hold the user object
 
     useEffect(() => {
+        document.title = 'Pharma X'; // Set the title of the page
         const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser) {

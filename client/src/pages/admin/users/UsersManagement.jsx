@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Sidebar from '../../../components/sidebar/Sidebar.jsx';
-import Modal from '../../../components/modal/ConfirmationModal.jsx'; // Ensure this modal component is properly set up
+import Modal from '../../../components/modal/ConfirmationModal.jsx';
+import EditUserModal from '../../../components/modal/EditUserModal.jsx';
 import styles from './UsersManagement.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -11,10 +12,14 @@ const UsersManagement = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [uidVisibility, setUidVisibility] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
+    const [selectedUser, setSelectedUser] = useState(null);
     const [modalMessage, setModalMessage] = useState('');
     const [isError, setIsError] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    document.title = 'User Management - Pharmax';
 
     const fetchUsers = useCallback(() => {
         setIsLoading(true);
@@ -103,9 +108,34 @@ const UsersManagement = () => {
         }));
     };
 
-    const handleEdit = (userId) => {
-        console.log('Edit function not implemented yet for user:', userId);
-        // You can add your navigation or state management logic here
+    const handleEdit = (user) => {
+        setSelectedUser(user);
+        setIsEditModalOpen(true);
+    };
+
+    const handleSaveUser = (updatedUser) => {
+        fetch(`https://us-central1-pharmax-uniq.cloudfunctions.net/api/users/${updatedUser.uid}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedUser),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update user');
+                }
+                return response.json();
+            })
+            .then(() => {
+                setUsers((prevUsers) => prevUsers.map(user => (user.uid === updatedUser.uid ? updatedUser : user)));
+                setIsEditModalOpen(false);
+                fetchUsers(); // Fetch users again to reload the table
+            })
+            .catch(error => {
+                console.error('Error updating user:', error);
+                alert('Error updating user');
+            });
     };
 
     return (
@@ -119,6 +149,12 @@ const UsersManagement = () => {
             >
                 {isDeleting ? 'Deleting...' : modalMessage}
             </Modal>
+            <EditUserModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                user={selectedUser}
+                onSave={handleSaveUser}
+            />
             <div className="container">
                 <div className="flex-container">
                     <Sidebar />
@@ -150,7 +186,7 @@ const UsersManagement = () => {
                                                 <td>{user.displayName}</td>
                                                 <td>{user.role}</td>
                                                 <td className={styles.action}>
-                                                    <a onClick={() => handleEdit(user.uid)} className={styles.btn_icon}>
+                                                    <a onClick={() => handleEdit(user)} className={styles.btn_icon}>
                                                         <FontAwesomeIcon className={styles.btn_icons} icon={faEdit} title="Edit" />
                                                     </a>
                                                     <a onClick={() => handleDelete(user.uid)} className={styles.btn_icon}>

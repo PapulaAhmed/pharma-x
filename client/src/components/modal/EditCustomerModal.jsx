@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../firebaseConfig';
 import { doc, updateDoc } from 'firebase/firestore';
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 import PropTypes from 'prop-types';
 
 const EditCustomerModal = ({ isOpen, onClose, customer }) => {
@@ -10,7 +10,7 @@ const EditCustomerModal = ({ isOpen, onClose, customer }) => {
         age: '',
         phoneNumber: '',
         address: '',
-        sex: ''
+        gender: ''
     });
 
     useEffect(() => {
@@ -20,7 +20,7 @@ const EditCustomerModal = ({ isOpen, onClose, customer }) => {
                 age: customer.age,
                 phoneNumber: customer.phoneNumber,
                 address: customer.address,
-                sex: customer.sex
+                gender: customer.gender
             });
         }
     }, [customer]);
@@ -53,6 +53,7 @@ const EditCustomerModal = ({ isOpen, onClose, customer }) => {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
+                    sx={{ mb: 2 }}
                 />
                 <TextField
                     margin="dense"
@@ -63,6 +64,7 @@ const EditCustomerModal = ({ isOpen, onClose, customer }) => {
                     name="age"
                     value={formData.age}
                     onChange={handleInputChange}
+                    sx={{ mb: 2 }}
                 />
                 <TextField
                     margin="dense"
@@ -73,6 +75,7 @@ const EditCustomerModal = ({ isOpen, onClose, customer }) => {
                     name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
+                    sx={{ mb: 2 }}
                 />
                 <TextField
                     margin="dense"
@@ -83,17 +86,20 @@ const EditCustomerModal = ({ isOpen, onClose, customer }) => {
                     name="address"
                     value={formData.address}
                     onChange={handleInputChange}
+                    sx={{ mb: 2 }}
                 />
-                <TextField
-                    margin="dense"
-                    label="Sex"
-                    type="text"
-                    fullWidth
-                    variant="outlined"
-                    name="sex"
-                    value={formData.sex}
-                    onChange={handleInputChange}
-                />
+                <FormControl fullWidth variant="outlined" margin="dense" sx={{ mb: 2 }}>
+                    <InputLabel>gender</InputLabel>
+                    <Select
+                        label="Gender"
+                        value={formData.gender}
+                        onChange={(e) => handleInputChange({ target: { name: 'gender', value: e.target.value } })}
+                    >
+                        <MenuItem value="Male">Male</MenuItem>
+                        <MenuItem value="Female">Female</MenuItem>
+                        <MenuItem value="Not Specified">Not Specified</MenuItem>
+                    </Select>
+                </FormControl>
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => onClose(false)}>Cancel</Button>

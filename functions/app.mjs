@@ -87,6 +87,27 @@ app.delete('/users/:uid', async (req, res) => {
     }
 });
 
+app.put('/users/:uid', async (req, res) => {
+    const uid = req.params.uid;
+    const { role, password } = req.body;
+
+    try {
+        // Update the user's role in Firestore
+        const userRef = db.collection('users').doc(uid);
+        await userRef.update({ role });
+
+        // Update the user's password in Firebase Authentication if provided
+        if (password) {
+            await admin.auth().updateUser(uid, { password });
+        }
+
+        res.status(200).json({ message: 'User updated successfully' });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ message: 'Failed to update user', error: error.message });
+    }
+});
+
 
 app.listen(3000, () => {
     console.log(`Server listening at http://localhost:3000`);

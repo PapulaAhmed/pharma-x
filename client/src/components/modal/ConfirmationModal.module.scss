@@ -1,0 +1,53 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); // Semi-transparent background
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; // High z-index to ensure it is on top of other content
+}
+
+.modal {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px; // Maximum width of the modal
+}
+
+.modalContent {
+    margin-bottom: 20px;
+}
+
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.confirmButton, .closeButton {
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #007BFF; // Blue background for buttons
+    color: white;
+
+    &:hover {
+        background-color: #0056b3; // Darker blue on hover
+    }
+
+    &.closeButton {
+        background-color: #6c757d; // Grey button for close
+
+        &:hover {
+            background-color: #5a6268; // Darker grey on hover
+        }
+    }
+}

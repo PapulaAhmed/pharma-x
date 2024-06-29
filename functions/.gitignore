@@ -1,2 +1,6 @@
 node_modules/
 *.local
+
+# Ignore all files in the build/ directory
+/.runtimeconfig.json
+.runtimeconfig.json

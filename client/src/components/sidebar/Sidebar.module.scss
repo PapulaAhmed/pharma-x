@@ -1,8 +1,8 @@
 .sidebar {
-    width: 13%;
+    width: 260px;
     height: 100vh;
     background-color: #f0f0f0;
-    padding: 3% 0%;
+    padding: 3rem 0;
     margin-right: 20px;
     background-image: url(/public/mesh-login.png);
 
@@ -14,9 +14,12 @@
     .sidebarContent {
         display: flex;
         flex-direction: column;
+        justify-content: space-between; // Adjust this to space-between to push logout to the bottom
+        height: 100%; // Ensure this fills the entire sidebar
 
         .menuList {
             list-style-type: none;
+            flex-grow: 1; // Takes all available space pushing everything else down
 
             .menuItem {
                 border-radius: 5px;
@@ -48,6 +51,17 @@
                     }
                 }
             }
+        }
+
+        .logout {
+            padding: 10px 40px;
+            text-decoration: none;
+            color: red;
+            font-weight: bold;
+            display: block;
+            cursor: pointer;
+            margin-top: auto;
+            text-align: center;
         }
     }
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { db } from '../../../firebaseConfig';
+import { db } from '../../../firebaseConfig.js';
 import { collection, addDoc } from 'firebase/firestore';
 import { Box, TextField, Button, Typography, MenuItem, Breadcrumbs, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';

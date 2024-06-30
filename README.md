@@ -6,13 +6,11 @@ Welcome to the Pharma X repository. This project is a comprehensive pharmacy man
 ## Features
 
 ### Invoice Management
-- Create and manage invoices with fields for client names, status (draft, pending, sent), and dates.
-- Detailed itemization of products including description, price, and quantity.
+- Create and manage invoices.
 - Automatically calculates totals and maintains a running tally of invoice items.
 
 ### Customer Management
 - Manage customer information with the ability to add, update, and delete customer records.
-- Track customer purchase history and account status.
 - Enhanced search functionality to quickly retrieve customer details.
 
 ### Admin Panel

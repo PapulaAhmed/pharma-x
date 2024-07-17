@@ -33,7 +33,7 @@ Welcome to the Pharma X repository. This project is a comprehensive pharmacy man
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/SahandMohammed/pharma-x.git
+   git clone https://github.com/PapulaAhmed/pharma-x.git
    ```
 2. Navigate to the project client directory:
    ```bash
